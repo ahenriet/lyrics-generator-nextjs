@@ -2,9 +2,10 @@
 
 import Form from "./Form";
 import { useState, useEffect, JSX } from "react";
-import { Textarea } from "@chakra-ui/react";
+import { Textarea, Box } from "@chakra-ui/react";
 import { FormData } from "../types/FormData";
 import { generateLyrics } from "./services/api";
+import "./styles/lyrics.css";
 
 export default function Home(): JSX.Element {
   const [lyrics, setLyrics] = useState<string>("");
@@ -47,22 +48,39 @@ export default function Home(): JSX.Element {
   };
 
   return (
-    <>
+    <Box
+      p={50}
+      maxW="700px"
+      mx="auto"
+      mt={5}
+      boxShadow="lg"
+      borderRadius="lg"
+      bg="blue.50"
+      width="100%"
+      border="1px"
+      borderColor="blue.100"
+    >
       <Form onSubmit={handleFormSubmit} isLoading={isLoading} />
-      {
-        lyrics && (
-          <Textarea
-            value={displayedLyrics}
-            readOnly
-            placeholder="Generated Lyrics"
-            rows={20}
-            mt="6"
-            bg="gray.100"
-            fontSize="xl"
-            fontWeight="bold"
-          />
-        )
-      }
-    </>
+      {lyrics && (
+        <Textarea
+          className="lyrics-textarea"
+          value={displayedLyrics}
+          readOnly
+          placeholder="Generated Lyrics"
+          rows={20}
+          bg="gray.100"
+          fontSize="xl"
+          fontWeight="bold"
+          color="blue.900"
+          width="100%"
+          shadow="sm"
+          mt={10}
+          borderColor="blue.200"
+          borderRadius="lg"
+          _hover={{ borderColor: "blue.300" }}
+          _focus={{ borderColor: "blue.400" }}
+        />
+      )}
+    </Box>
   );
 }

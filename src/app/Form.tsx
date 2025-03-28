@@ -34,15 +34,15 @@ function Form({ onSubmit, isLoading }: FormProps): JSX.Element {
   return (
     <Box
       p={5}
-      maxW="600px"
       mx="auto"
       mt={10}
-      boxShadow="lg"
+      boxShadow="sm"
       borderRadius="lg"
+      borderColor="blue.200"
       bg="gray.100"
     >
       <Text fontSize="2xl" fontWeight="bold" mb={5} textAlign="center" color="black">
-        Customize Your Song Lyrics
+        Create Song Lyrics
       </Text>
       <VStack wordSpacing={4} align="stretch">
         <Field label="Genre">
@@ -88,7 +88,7 @@ function Form({ onSubmit, isLoading }: FormProps): JSX.Element {
           onClick={handleSubmit}
           w="full"
         >
-          {isLoading ? <Spinner size="sm" /> : "Generate Lyrics"}
+          {isLoading ? <Spinner size="sm" /> : "Let's go!"}
         </Button>
       </VStack>
     </Box>
