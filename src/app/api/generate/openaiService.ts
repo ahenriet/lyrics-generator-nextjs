@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+// import OpenAI from 'openai';
 
 // const openai = new OpenAI({
 // 	apiKey: process.env.OPENAI_API_KEY,
@@ -28,7 +28,7 @@ I know that life won't break me\n\
 When I come to call, she won't forsake me\n\
 I'm loving angels instead";
 
-export async function generateLyricsFromOpenAI({ genre, theme, keywords, tone }: LyricsParams): Promise<string> {
+export async function generateLyricsFromOpenAI({ /* genre, theme, keywords, tone */ }: LyricsParams): Promise<string> {
 	return new Promise(resolve => setTimeout(() => resolve(angels), 200));
 }
 

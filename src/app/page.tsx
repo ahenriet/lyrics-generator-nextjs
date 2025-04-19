@@ -2,7 +2,7 @@
 
 import Form from "./Form";
 import { useState, useEffect, JSX } from "react";
-import { Textarea, Box } from "@chakra-ui/react";
+import { Textarea, Box, Text } from "@chakra-ui/react";
 import { FormData } from "../types/FormData";
 import { generateLyrics } from "./services/api";
 import "./styles/lyrics.css";
@@ -11,6 +11,7 @@ export default function Home(): JSX.Element {
   const [lyrics, setLyrics] = useState<string>("");
   const [displayedLyrics, setDisplayedLyrics] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!lyrics) {
@@ -35,13 +36,15 @@ export default function Home(): JSX.Element {
 
   const handleFormSubmit = async (formData: FormData) => {
     setLyrics("");
+    setError(null);
     setIsLoading(true);
 
     try {
       const generatedLyrics = await generateLyrics(formData);
       setLyrics(generatedLyrics);
     } catch (error) {
-      alert("Error generating lyrics. Please try again.");
+      console.error("Error generating lyrics:", error);
+      setError("Failed to generate lyrics. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -49,10 +52,10 @@ export default function Home(): JSX.Element {
 
   return (
     <Box
-      p={50}
+      p={5}
       maxW="700px"
       mx="auto"
-      mt={5}
+      mt={10}
       boxShadow="lg"
       borderRadius="lg"
       bg="blue.50"
@@ -61,6 +64,18 @@ export default function Home(): JSX.Element {
       borderColor="blue.100"
     >
       <Form onSubmit={handleFormSubmit} isLoading={isLoading} />
+      {error && (
+        <Box
+          mt={4}
+          p={4}
+          bg="red.50"
+          border="1px"
+          borderColor="red.200"
+          borderRadius="md"
+        >
+          <Text color="red.700">{error}</Text>
+        </Box>
+      )}
       {lyrics && (
         <Textarea
           className="lyrics-textarea"
