@@ -29,7 +29,7 @@ export default function Home(): JSX.Element {
       } else {
         clearInterval(intervalId);
       }
-    }, 30);
+    }, 20);
 
     return () => clearInterval(intervalId);
   }, [lyrics]);
@@ -58,7 +58,7 @@ export default function Home(): JSX.Element {
       mt={10}
       boxShadow="lg"
       borderRadius="lg"
-      bg="blue.50"
+      bg="gray.400"
       width="100%"
       border="1px"
       borderColor="blue.100"

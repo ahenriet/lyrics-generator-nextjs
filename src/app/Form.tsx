@@ -39,10 +39,10 @@ function Form({ onSubmit, isLoading }: FormProps): JSX.Element {
       boxShadow="sm"
       borderRadius="lg"
       borderColor="blue.200"
-      bg="gray.100"
+      bg="gray.500"
     >
-      <Text fontSize="2xl" fontWeight="bold" mb={5} textAlign="center" color="black">
-        Create Song Lyrics
+      <Text fontSize="2xl" fontWeight="bold" mb={5} textAlign="center" color="blue.100">
+        Song Lyrics Generator
       </Text>
       <VStack wordSpacing={4} align="stretch">
         <Field label="Genre">
@@ -87,6 +87,7 @@ function Form({ onSubmit, isLoading }: FormProps): JSX.Element {
           size="lg"
           onClick={handleSubmit}
           w="full"
+          disabled={!(genre && theme && keywords && tone)}
         >
           {isLoading ? <Spinner size="sm" /> : "Let's go!"}
         </Button>
