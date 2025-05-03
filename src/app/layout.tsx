@@ -1,17 +1,8 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next/types";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import "./styles/globals.css";
-import Provider from "../components/ui/provider"
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
+import theme from "./theme";
 
 export const metadata: Metadata = {
   title: "Song Lyrics Generator",
@@ -24,10 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Provider>{children}</Provider>
-      </body>
+    <html>
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body> 
     </html>
   );
 }

@@ -1,99 +1,66 @@
 'use client'
 
 import Form from "./Form";
-import { useState, useEffect, JSX } from "react";
-import { Textarea, Box, Text } from "@chakra-ui/react";
+import { useState, JSX } from "react";
+import { TextField, Box, Alert } from "@mui/material";
 import { FormData } from "../types/FormData";
-import { generateLyrics } from "./services/api";
-import "./styles/lyrics.css";
+import { useCompletion } from '@ai-sdk/react';
 
 export default function Home(): JSX.Element {
-  const [lyrics, setLyrics] = useState<string>("");
-  const [displayedLyrics, setDisplayedLyrics] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { completion, complete, isLoading } = useCompletion({
+    api: '/api/generate',
+  });
 
-  useEffect(() => {
-    if (!lyrics) {
-      setDisplayedLyrics("");
-      return;
-    }
-
-    setDisplayedLyrics("");
-    let currentIndex = 0;
-
-    const intervalId = setInterval(() => {
-      if (currentIndex < lyrics.length) {
-        setDisplayedLyrics((prev: string) => prev + lyrics[currentIndex]);
-        currentIndex++;
-      } else {
-        clearInterval(intervalId);
-      }
-    }, 20);
-
-    return () => clearInterval(intervalId);
-  }, [lyrics]);
 
   const handleFormSubmit = async (formData: FormData) => {
-    setLyrics("");
     setError(null);
-    setIsLoading(true);
 
     try {
-      const generatedLyrics = await generateLyrics(formData);
-      setLyrics(generatedLyrics);
+      await complete(JSON.stringify(formData));
     } catch (error) {
       console.error("Error generating lyrics:", error);
       setError("Failed to generate lyrics. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
     <Box
       p={5}
-      maxW="700px"
+      maxWidth="900px"
       mx="auto"
       mt={10}
-      boxShadow="lg"
-      borderRadius="lg"
-      bg="gray.400"
+      boxShadow={3}
+      borderRadius={2}
+      bgcolor="grey.400"
       width="100%"
-      border="1px"
-      borderColor="blue.100"
+      border={1}
+      borderColor="primary.light"
     >
       <Form onSubmit={handleFormSubmit} isLoading={isLoading} />
       {error && (
-        <Box
-          mt={4}
-          p={4}
-          bg="red.50"
-          border="1px"
-          borderColor="red.200"
-          borderRadius="md"
-        >
-          <Text color="red.700">{error}</Text>
-        </Box>
+        <Alert severity="error" sx={{ mt: 4 }}>
+          {error}
+        </Alert>
       )}
-      {lyrics && (
-        <Textarea
+      {completion && (
+        <TextField
           className="lyrics-textarea"
-          value={displayedLyrics}
-          readOnly
+          value={completion}
+          slotProps={{ htmlInput: { readOnly: true } }}
           placeholder="Generated Lyrics"
+          multiline
           rows={20}
-          bg="gray.100"
-          fontSize="xl"
-          fontWeight="bold"
-          color="blue.900"
-          width="100%"
-          shadow="sm"
-          mt={10}
-          borderColor="blue.200"
-          borderRadius="lg"
-          _hover={{ borderColor: "blue.300" }}
-          _focus={{ borderColor: "blue.400" }}
+          fullWidth
+          variant="outlined"
+
+          sx={{
+            mt: 4,
+            bgcolor: "grey.300",
+            fontSize: "1.25rem",
+            fontWeight: "bold",
+            color: "primary.dark",
+          }}
         />
       )}
     </Box>

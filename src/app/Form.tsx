@@ -1,19 +1,9 @@
 "use client"
 
-import {
-  Box,
-  Input,
-  Spinner,
-  Text,
-  Textarea,
-  VStack,
-} from "@chakra-ui/react";
 import { JSX, useState } from "react";
 import GenreSelect from "./GenreSelect";
-import { Button } from "@/components/ui/button";
-import { Field } from "@/components/ui/field";
-import { Slider } from "@/components/ui/slider";
 import { FormData } from "../types/FormData";
+import { Box, Stack, Typography, TextField, Slider, Button, CircularProgress } from "@mui/material";
 
 interface FormProps {
   onSubmit: (formData: FormData) => void;
@@ -35,63 +25,75 @@ function Form({ onSubmit, isLoading }: FormProps): JSX.Element {
     <Box
       p={5}
       mx="auto"
-      mt={10}
-      boxShadow="sm"
-      borderRadius="lg"
-      borderColor="blue.200"
-      bg="gray.500"
+      mt={5}
+      boxShadow={3}
+      borderRadius={2}
+      borderColor="green.200"
+      bgcolor="grey.300"
     >
-      <Text fontSize="2xl" fontWeight="bold" mb={5} textAlign="center" color="blue.100">
+      <Typography variant="h4" color="primary" textAlign="center">
         Song Lyrics Generator
-      </Text>
-      <VStack wordSpacing={4} align="stretch">
-        <Field label="Genre">
+      </Typography>
+      <Stack spacing={4} mt={4} direction="column">
+        <div>
+          <Typography variant="subtitle1">Genre</Typography>
           <GenreSelect genre={genre} updateGenre={setGenre} />
-        </Field>
+        </div>
 
-        <Field label="Theme">
-          <Input
+        <div>
+          <Typography variant="subtitle1">Theme</Typography>
+          <TextField
             placeholder="What's your song about? (e.g., love, motivation)"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
+            fullWidth
+            variant="outlined"
           />
-        </Field>
+        </div>
 
-        <Field label="Keywords">
-          <Textarea
+        <div>
+          <Typography variant="subtitle1">Keywords</Typography>
+          <TextField
             placeholder="Enter specific words to include (comma-separated)"
             value={keywords}
             onChange={(e) => setKeywords(e.target.value)}
+            fullWidth
+            variant="outlined"
+            multiline
+            rows={3}
           />
-        </Field>
+        </div>
 
-        <Field label="Tone">
+        <div>
+          <Typography variant="subtitle1">Tone</Typography>
           <Slider
-            value={[tone]}
-            onValueChange={(e) => setTone(e.value[0])}
+            value={tone}
+            onChange={(e, value) => setTone(value as number)}
             step={10}
-            style={{ width: "200px" }}
-          >
-          </Slider>
-          <Text mt={2} textAlign="center">
+            marks
+            min={0}
+            max={100}
+          />
+          <Typography mt={2} textAlign="center">
             {tone <= 30
               ? "Playful"
               : tone <= 70
-                ? "Neutral"
-                : "Emotional"}
-          </Text>
-        </Field>
+              ? "Neutral"
+              : "Emotional"}
+          </Typography>
+        </div>
 
         <Button
-          colorScheme="blue"
-          size="lg"
+          variant="contained"
+          color="primary"
+          size="large"
           onClick={handleSubmit}
-          w="full"
+          fullWidth
           disabled={!(genre && theme && keywords && tone)}
         >
-          {isLoading ? <Spinner size="sm" /> : "Let's go!"}
+          {isLoading ? <CircularProgress size={24} /> : "Let's go!"}
         </Button>
-      </VStack>
+      </Stack>
     </Box>
   );
 }

@@ -1,11 +1,6 @@
-import { createListCollection } from "@chakra-ui/react";
-import {
-	SelectContent,
-	SelectItem,
-	SelectRoot,
-	SelectTrigger,
-	SelectValueText,
-} from "../components/ui/select";
+'use client'
+
+import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
 function GenreSelect({ genre, updateGenre }) {
 	const genres = [
@@ -15,22 +10,21 @@ function GenreSelect({ genre, updateGenre }) {
 		{ value: "country", label: "Country" }];
 
 	return (
-		<SelectRoot
-			value={genre}
-			collection={createListCollection({ items: genres })}
-			onValueChange={(e) => updateGenre(e.value)}
-		>
-			<SelectTrigger>
-				<SelectValueText placeholder="Select Genre" />
-			</SelectTrigger>
-			<SelectContent>
+		<FormControl fullWidth>
+			<InputLabel id="genre-select-label">Genre</InputLabel>
+			<Select
+				labelId="genre-select-label"
+				value={genre}
+				onChange={(e) => updateGenre(e.target.value)}
+				label="Genre"
+			>
 				{genres.map((item) => (
-					<SelectItem item={item} key={item.value}>
+					<MenuItem value={item.value} key={item.value}>
 						{item.label}
-					</SelectItem>
+					</MenuItem>
 				))}
-			</SelectContent>
-		</SelectRoot>
+			</Select>
+		</FormControl>
 	);
 }
 
