@@ -45,7 +45,6 @@ export default function Home(): JSX.Element {
       )}
       {completion && (
         <TextField
-          className="lyrics-textarea"
           value={completion}
           slotProps={{ htmlInput: { readOnly: true } }}
           placeholder="Generated Lyrics"
